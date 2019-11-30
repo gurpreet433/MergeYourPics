@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MergeYourPics</string>
+    <string name="up_arrow">\u2227</string>
+    <string name="down_arrow">\u2228</string>
 </resources>
