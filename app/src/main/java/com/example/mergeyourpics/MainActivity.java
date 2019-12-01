@@ -1,7 +1,10 @@
 package com.example.mergeyourpics;
 
 import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,9 +14,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     boolean isShowingMenu;
     LinearLayout linearLayout;
     LinearLayout menuLinearLayout;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,22 +44,33 @@ public class MainActivity extends AppCompatActivity {
         final View view = inflater.inflate(R.layout.menu_layout, null);
         linearLayout = findViewById(R.id.linear_layout);
 
+        isShowingMenu = false;
         showMoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (isShowingMenu) {
-                    showMoreButton.setText(R.string.up_arrow);
-                    linearLayout.removeView(findViewById(R.id.new_menu_layout));
+                    showMoreButton.setText(R.string.down_arrow);
+                    linearLayout.removeView(view);
                     isShowingMenu = false;
                 }
                 else{
-                    showMoreButton.setText(R.string.down_arrow);
+                    showMoreButton.setText(R.string.up_arrow);
                     linearLayout.addView(view);
                     isShowingMenu = true;
                 }
             }
         });
+
+        int[] mPlaceList = new int[]{R.drawable.ic_launcher_background, R.drawable.shape_circle};
+
+        recyclerView = findViewById(R.id.recycler_view);
+        GridLayoutManager mGridLayoutManager = new GridLayoutManager(MainActivity.this, 2);
+        recyclerView.setLayoutManager(mGridLayoutManager);
+
+        MyAdapter myAdapter = new MyAdapter(MainActivity.this, mPlaceList);
+        recyclerView.setAdapter(myAdapter);
+
     }
 
     private void removeShadowOfActionBar() {
