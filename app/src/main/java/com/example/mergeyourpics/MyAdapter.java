@@ -1,6 +1,7 @@
 package com.example.mergeyourpics;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,12 @@ public class MyAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         PlaceViewHolder placeViewHolder = (PlaceViewHolder) holder;
         placeViewHolder.mPlace.setImageResource(mPlaceList[position]);
+        placeViewHolder.mPlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("click", "clicked");
+            }
+        });
     }
 
     @Override
