@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
                                    RecyclerView.State state) {
 
-            int position = parent.getChildAdapterPosition(view); // item position
+            int position = parent.getChildAdapterPosition(view);
             outRect.top = mSpaceHeight;
             if ((position + 1) % 3 == 0)
             {
@@ -35,5 +35,4 @@ import androidx.recyclerview.widget.RecyclerView;
             }
 
         }
-
 }

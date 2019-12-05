@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         showMoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (isShowingMenu) {
                     showMoreButton.setText(R.string.down_arrow);
                     slideUpView(view);

@@ -25,8 +25,6 @@ public class MyAdapter extends RecyclerView.Adapter {
         this.allImageList = allImageList;
     }
 
-
-
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -51,7 +49,7 @@ public class MyAdapter extends RecyclerView.Adapter {
         {
             ImagesViewHolder imagesViewHolder = (ImagesViewHolder) holder;
 
-            Glide.with(mContext).load(allImageList.get(position)).into(((ImagesViewHolder) holder).mImage);
+            Glide.with(mContext).load(allImageList.get(position - 1)).into(((ImagesViewHolder) holder).mImage);
             imagesViewHolder.mImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
