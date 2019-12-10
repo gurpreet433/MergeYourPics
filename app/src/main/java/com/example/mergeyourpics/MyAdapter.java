@@ -56,6 +56,7 @@ public class MyAdapter extends RecyclerView.Adapter {
                     Log.i("click", "clicked");
                 }
             });
+           // imagesViewHolder.mImageSelectedOrNot
         }
         else{
             SelectImageFromMemoryViewHolder imageFromMemoryViewHolder = (SelectImageFromMemoryViewHolder) holder;
@@ -85,9 +86,11 @@ public class MyAdapter extends RecyclerView.Adapter {
 
     class ImagesViewHolder extends RecyclerView.ViewHolder {
         public ImageView mImage;
+        public ImageView mImageSelectedOrNot;
         public ImagesViewHolder(View itemView) {
             super(itemView);
             mImage = itemView.findViewById(R.id.ivPlace);
+            mImageSelectedOrNot = itemView.findViewById(R.id.image_selected_or_not);
         }
     }
 

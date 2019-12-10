@@ -10,12 +10,13 @@
         android:scaleType="centerCrop"
         android:layout_height="130dp"/>
 
-    <ImageButton
+    <ImageView
+        android:id="@+id/image_selected_or_not"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentRight="true"
-        android:background="@android:color/transparent"
         android:layout_marginTop="5dp"
         android:layout_marginRight="5dp"
-        android:src="@drawable/shape_circle"/>
+        android:background="@android:color/transparent"
+        android:src="@drawable/shape_circle" />
 </RelativeLayout>
