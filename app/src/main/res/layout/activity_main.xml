@@ -27,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:background="@color/colorPrimaryDark"
+                android:enabled="false"
                 android:text="Merge"/>
 
             <Button

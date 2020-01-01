@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -52,15 +53,7 @@ public class MyAdapter extends SelectableAdapter<MyAdapter.ImagesViewHolder> {
             ImagesViewHolder imagesViewHolder = (ImagesViewHolder) holder;
 
             Glide.with(mContext).load(allImageList.get(position - 1)).into(((ImagesViewHolder) holder).mImage);
-//            imagesViewHolder.mImage.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Log.i("click", "clicked");
-//                }
-//            });
-
             holder.selectedOverlay.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);
-
         }
         else{
             SelectImageFromMemoryViewHolder imageFromMemoryViewHolder = (SelectImageFromMemoryViewHolder) holder;
@@ -88,6 +81,11 @@ public class MyAdapter extends SelectableAdapter<MyAdapter.ImagesViewHolder> {
     public int getItemViewType(int position) {
 
         return position == 0 ? 1 : 0;
+    }
+
+    @Override
+    public int getSelectedItemCount() {
+        return super.getSelectedItemCount();
     }
 
     public static class ImagesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener  {
@@ -140,4 +138,6 @@ public class MyAdapter extends SelectableAdapter<MyAdapter.ImagesViewHolder> {
             button = itemView.findViewById(R.id.choose_img_form_memory_btn);
         }
     }
+
+
 }

@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,17 +29,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity  implements MyAdapter.ImagesViewHolder.ClickListener   {
 
@@ -271,11 +265,13 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
     @Override
     public void onItemClicked(int position) {
         toggleSelection(position);
+        updateButton();
     }
 
     @Override
     public boolean onItemLongClicked(int position) {
         toggleSelection(position);
+        updateButton();
         return true;
     }
 
@@ -284,4 +280,20 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
 
     }
 
+    private void updateButton()
+    {
+        Button mergeButton = findViewById(R.id.merge_images_button);
+        int count = myAdapter.getSelectedItemCount();
+        if(count == 0)
+        {
+            mergeButton.setText("MERGE");
+            mergeButton.setEnabled(false);
+            mergeButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
+        else{
+            mergeButton.setEnabled(true);
+            mergeButton.setText("MERGE" + " (" + count + ") ");
+            mergeButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        }
+    }
 }
