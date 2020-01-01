@@ -42,7 +42,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.zip.Inflater;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  implements MyAdapter.ImagesViewHolder.ClickListener   {
 
     Button showMoreButton;
     boolean isShowingMenu;
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout menuLinearLayout;
     RecyclerView recyclerView;
     ArrayList<String> allImagesPath;
+    MyAdapter myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         GridLayoutManager mGridLayoutManager = new GridLayoutManager(MainActivity.this, 3);
         recyclerView.setLayoutManager(mGridLayoutManager);
 
-        MyAdapter myAdapter = new MyAdapter(MainActivity.this, allImagesPath);
+        myAdapter = new MyAdapter(MainActivity.this, allImagesPath, this);
         recyclerView.setAdapter(myAdapter);
 
         RecyclerView.ItemDecoration dividerItemDecoration = new ItemDecorationRecyclerView(5);
@@ -266,4 +267,21 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    @Override
+    public void onItemClicked(int position) {
+        toggleSelection(position);
+    }
+
+    @Override
+    public boolean onItemLongClicked(int position) {
+        toggleSelection(position);
+        return true;
+    }
+
+    private void toggleSelection(int position) {
+        myAdapter.toggleSelection (position);
+
+    }
+
 }

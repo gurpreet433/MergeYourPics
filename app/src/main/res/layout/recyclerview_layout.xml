@@ -11,7 +11,7 @@
         android:layout_height="130dp"/>
 
     <ImageView
-        android:id="@+id/image_selected_or_not"
+        android:id="@+id/image_not_selected"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentRight="true"
@@ -19,4 +19,15 @@
         android:layout_marginRight="5dp"
         android:background="@android:color/transparent"
         android:src="@drawable/shape_circle" />
+
+    <ImageView
+        android:id="@+id/image_selected"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="4dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="11dp"
+        android:layout_marginRight="5dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/shape_circle_ticked" />
 </RelativeLayout>
