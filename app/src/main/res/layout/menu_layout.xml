@@ -10,14 +10,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:orientation="horizontal">
 
-        <ImageButton    
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+        <ImageButton
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginRight="20dp"
-            android:src="@drawable/ic_launcher_background"/>
+            android:background="@drawable/tick_icon"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,14 +31,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:orientation="horizontal">
 
         <ImageButton
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginRight="20dp"
-            android:src="@drawable/ic_launcher_background"/>
+            android:background="@drawable/background_transparent_icon"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -52,14 +52,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:orientation="horizontal">
 
         <ImageButton
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginRight="20dp"
-            android:src="@drawable/ic_launcher_background"/>
+            android:background="@drawable/horizontal_verticle_distance_icon"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -73,14 +73,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:orientation="horizontal">
 
         <ImageButton
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginRight="20dp"
-            android:src="@drawable/ic_launcher_background"/>
+            android:background="@drawable/tick_icon"/>
 
         <TextView
             android:layout_width="wrap_content"
