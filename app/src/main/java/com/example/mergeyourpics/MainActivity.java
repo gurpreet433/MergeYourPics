@@ -31,7 +31,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
     RecyclerView recyclerView;
     ArrayList<String> allImagesPath;
     MyAdapter myAdapter;
+    PhotoSettings photoSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,9 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
         view.setVisibility(View.GONE);
         linearLayout = findViewById(R.id.linear_layout);
         linearLayout.addView(view);
+
+        photoSettings = new PhotoSettings();
+        setSettingsButtonsClickEvents(view);
 
         isShowingMenu = false;
         showMoreButton.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +89,67 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
             allImagesPath = getAllShownImagesPath(this);
             setupRecyclerView();
         }
+    }
+
+    private void setSettingsButtonsClickEvents(final View view) {
+        final LinearLayout StackVerticallyLayout = view.findViewById(R.id.stack_vertically_layout);
+        final LinearLayout BackgroundFillLayout  = view.findViewById(R.id.background_fill_layout);
+        final LinearLayout ImageSpacingLayout  = view.findViewById(R.id.image_spacing_layout);
+        final LinearLayout ScaleLargerLayout  = view.findViewById(R.id.scale_larger_layout);
+
+        StackVerticallyLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("click", "click1");
+                ImageButton stackButton = view.findViewById(R.id.stack_button);
+                TextView stackText = view.findViewById(R.id.stack_text);
+
+                if (photoSettings.getStackVertically() == true)
+                {
+                    stackButton.setBackgroundResource(R.drawable.tick_icon_ticked);
+                    stackText.setText("Stack horizontally");
+                }else
+                {
+                    stackButton.setBackgroundResource(R.drawable.tick_icon);
+                    stackText.setText("Stack vertically");
+                }
+                photoSettings.toggleStackVertically();
+            }
+        });
+
+        BackgroundFillLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("click", "clicked");
+            }
+        });
+
+        ImageSpacingLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("click", "clicked");
+            }
+        });
+
+        ScaleLargerLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("click", "click2");
+                ImageButton stackButton = view.findViewById(R.id.scale_image_button);
+                TextView stackText = view.findViewById(R.id.scale_image_textView);
+
+                if (photoSettings.getScaleImageToSmallest() == true)
+                {
+                    stackButton.setBackgroundResource(R.drawable.tick_icon_ticked);
+                    stackText.setText("Scale smaller images to largest");
+                }else
+                {
+                    stackButton.setBackgroundResource(R.drawable.tick_icon);
+                    stackText.setText("Scale larger images to smallest");
+                }
+                photoSettings.toggleScaleImageToSmallest();
+            }
+        });
     }
 
 

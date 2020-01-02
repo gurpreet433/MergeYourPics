@@ -6,16 +6,26 @@ import android.graphics.Color;
 public class PhotoSettings {
     
     Boolean stackVertically;
-    Color colorChoice;
+    int colorChoice;
     int horizontalSpacing;
     int verticalSpacking;
-    Boolean ScaleImageToSmallest;
+    Boolean scaleImageToSmallest;
+
+
+    PhotoSettings()
+    {
+        stackVertically = true;
+        colorChoice = Color.WHITE;
+        horizontalSpacing = 48;
+        verticalSpacking = 39;
+        scaleImageToSmallest = true;
+    }
 
     public Boolean getStackVertically() {
         return stackVertically;
     }
 
-    public Color getColorChoice() {
+    public int getColorChoice() {
         return colorChoice;
     }
 
@@ -28,7 +38,7 @@ public class PhotoSettings {
     }
 
     public Boolean getScaleImageToSmallest() {
-        return ScaleImageToSmallest;
+        return scaleImageToSmallest;
     }
 
     // Setter
@@ -38,7 +48,7 @@ public class PhotoSettings {
     }
 
 
-    public void setColorChoice(Color colorChoice) {
+    public void setColorChoice(int colorChoice) {
         this.colorChoice = colorChoice;
     }
 
@@ -51,20 +61,24 @@ public class PhotoSettings {
     }
 
     public void setScaleImageToSmallest(Boolean scaleImageToSmallest) {
-        ScaleImageToSmallest = scaleImageToSmallest;
+        scaleImageToSmallest = scaleImageToSmallest;
     }
 
     public void toggleStackVertically(){
-        if (stackVertically == true)
+        if (stackVertically == true) {
             stackVertically = false;
-        else if (stackVertically == false)
+        }
+        else if (stackVertically == false) {
             stackVertically = true;
+        }
     }
 
-    public void ScaleImageToSmallest(){
-        if (ScaleImageToSmallest == true)
-            ScaleImageToSmallest = false;
-        else if (ScaleImageToSmallest == false)
-            ScaleImageToSmallest = true;
+    public void toggleScaleImageToSmallest(){
+        if (scaleImageToSmallest == true) {
+            scaleImageToSmallest = false;
+        }
+        else if (scaleImageToSmallest == false) {
+            scaleImageToSmallest = true;
+        }
     }
 }

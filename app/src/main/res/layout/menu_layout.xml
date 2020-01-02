@@ -8,36 +8,50 @@
 
 
     <LinearLayout
+        android:id="@+id/stack_vertically_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="1dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/stack_button"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginRight="20dp"
+            android:clickable="false"
             android:background="@drawable/tick_icon"/>
 
         <TextView
+            android:id="@+id/stack_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:text="Stack vertically"/>
+            android:text="Stack vertically"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
 
     <LinearLayout
+        android:id="@+id/background_fill_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="1dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal">
 
         <ImageButton
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginRight="20dp"
+            android:clickable="false"
             android:background="@drawable/background_transparent_icon"/>
 
         <TextView
@@ -50,14 +64,20 @@
 
 
     <LinearLayout
+        android:id="@+id/image_spacing_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="1dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal">
 
         <ImageButton
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:clickable="false"
             android:layout_marginRight="20dp"
             android:background="@drawable/horizontal_verticle_distance_icon"/>
 
@@ -71,18 +91,26 @@
 
 
     <LinearLayout
+       android:id="@+id/scale_larger_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="1dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/scale_image_button"
             android:layout_width="25dp"
             android:layout_height="25dp"
+            android:clickable="false"
             android:layout_marginRight="20dp"
             android:background="@drawable/tick_icon"/>
 
         <TextView
+            android:id="@+id/scale_image_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
