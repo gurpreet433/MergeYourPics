@@ -5,11 +5,11 @@ import android.graphics.Color;
 
 public class PhotoSettings {
     
-    Boolean stackVertically;
-    int colorChoice;
-    int horizontalSpacing;
-    int verticalSpacing;
-    Boolean scaleImageToSmallest;
+    private Boolean stackVertically;
+    private int colorChoice;
+    private int horizontalSpacing;
+    private int verticalSpacing;
+    private Boolean scaleImageToSmallest;
 
 
     PhotoSettings()
@@ -20,6 +20,8 @@ public class PhotoSettings {
         verticalSpacing = 39;  // random width
         scaleImageToSmallest = true;
     }
+
+
 
     public Boolean getStackVertically() {
         return stackVertically;

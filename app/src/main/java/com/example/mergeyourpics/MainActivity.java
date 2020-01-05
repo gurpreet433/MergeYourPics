@@ -23,10 +23,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +41,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -49,7 +54,14 @@ import com.skydoves.colorpickerview.ColorPickerView;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 import com.skydoves.colorpickerview.listeners.ColorListener;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity  implements MyAdapter.ImagesViewHolder.ClickListener   {
@@ -521,17 +533,27 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
                     .show();
         }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 
 
     private void toggleSelection(int position) {
         myAdapter.toggleSelection (position);
-
     }
 
-    private void updateButton()
+    public List<Integer> getSelectedItems() {
+        return myAdapter.getSelectedItems();
+    }
+
+    public void clearSelection() {
+        myAdapter.clearSelection();
+    }
+
+    public int getSelectedItemCount() {
+        return myAdapter.getSelectedItemCount();
+    }
+
+        private void updateButton()
     {
         Button mergeButton = findViewById(R.id.merge_images_button);
         int count = myAdapter.getSelectedItemCount();
@@ -541,10 +563,88 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
             mergeButton.setEnabled(false);
             mergeButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         }
+        else if(count == 1)
+        {
+            mergeButton.setText("MERGE (at-least 2 images)");
+            mergeButton.setEnabled(false);
+            mergeButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
         else{
             mergeButton.setEnabled(true);
             mergeButton.setText("MERGE" + " (" + count + ") ");
             mergeButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
         }
+
+        mergeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mergeImages();
+            }
+        });
+    }
+
+    void mergeImages()
+    {
+        List<Integer> ImageIntegerList = getSelectedItems();
+
+        ArrayList<Bitmap> bitmapList = new ArrayList<>();
+        Bitmap bitmap;
+
+        int width = 0, height = 0;
+
+        for (int i : ImageIntegerList)
+        {
+            File imgFile = new  File(allImagesPath.get(i - 1));
+            if(imgFile.exists()){
+                 bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                 if(bitmap.getHeight()> height)
+                 {
+                     height = bitmap.getHeight();
+                 }
+                 width += bitmap.getWidth();
+                 bitmapList.add(bitmap);
+            }
+            else {
+                Log.e("error", "image does not exits");
+            }
+        }
+
+        Log.i("hello", "width " + width + "\n" + "height " + height);
+
+        Bitmap cs = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas comboImage = new Canvas(cs);
+        comboImage.drawColor(photoSettings.getColorChoice());
+
+        int offsetWidth = 0;
+        for (Bitmap image: bitmapList) {
+            comboImage.drawBitmap(image, offsetWidth, 0f, null);
+            offsetWidth += image.getWidth();
+            offsetWidth += photoSettings.getHorizontalSpacing();
+        }
+
+        clearSelection();
+        updateButton();
+        SaveImage(cs);
+    }
+
+    private  void SaveImage(Bitmap finalBitmap) {
+        String fname = "Image-"+ Calendar.getInstance().getTimeInMillis()+".jpg";
+
+        String path = Environment.getExternalStorageDirectory().toString();
+        OutputStream fOut = null;
+
+        File file = new File(path, fname); // the File to save , append increasing numeric counter to prevent files from getting overwritten.
+        try {
+            fOut = new FileOutputStream(file);
+
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
+            fOut.flush(); // Not really required
+            fOut.close(); // do not forget to close the stream
+
+            MediaStore.Images.Media.insertImage(getContentResolver(),file.getAbsolutePath(),file.getName(),file.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

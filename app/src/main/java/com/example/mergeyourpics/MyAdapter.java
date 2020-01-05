@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyAdapter extends SelectableAdapter<MyAdapter.ImagesViewHolder> {
 
@@ -74,6 +75,17 @@ public class MyAdapter extends SelectableAdapter<MyAdapter.ImagesViewHolder> {
     @Override
     public int getSelectedItemCount() {
         return super.getSelectedItemCount();
+    }
+
+
+    @Override
+    public List<Integer> getSelectedItems() {
+        return super.getSelectedItems();
+    }
+
+    @Override
+    public void clearSelection() {
+        super.clearSelection();
     }
 
     public static class ImagesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener  {
