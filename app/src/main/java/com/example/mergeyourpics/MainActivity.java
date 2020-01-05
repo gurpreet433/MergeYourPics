@@ -440,8 +440,6 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
 
     // Pick images from memory
     int PICK_IMAGE_MULTIPLE = 1;
-    String imageEncoded;
-    List<String> imagesEncodedList;
     ArrayList<String> absolutePathList;
     @Override
     public void onChooseImagesClicked() {
@@ -456,17 +454,14 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
             // When an Image is picked
-            if (requestCode == PICK_IMAGE_MULTIPLE && resultCode == RESULT_OK
-                    && null != data) {
+            if (requestCode == PICK_IMAGE_MULTIPLE && resultCode == RESULT_OK && null != data) {
                 // Get the Image from data
-
                 String[] filePathColumn = { MediaStore.Images.Media.DATA };
-                imagesEncodedList = new ArrayList<String>();
                 absolutePathList = new ArrayList<String>();
+
+                // User picks single image
                 if(data.getData()!=null){
-
                     Uri mImageUri=data.getData();
-
                     // Get the cursor
                     Cursor cursor = getContentResolver().query(mImageUri,
                             filePathColumn, null, null, null);
@@ -476,20 +471,17 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                     String absolutePathOfImage = cursor.getString(columnIndex);
                     absolutePathList.add(absolutePathOfImage);
-                    Log.i("column", columnIndex+":");////
-                    imageEncoded  = cursor.getString(columnIndex);
+                    Log.i("column", columnIndex+":");
 
-                    for (int i = 0; i < absolutePathList.size(); i++)
-                    {
-                        if (allImagesPath.contains(absolutePathList.get(i))){
-                            Log.v("LOG_TAG", "\nlala" + absolutePathList.get(i));
-                            toggleSelection(allImagesPath.indexOf(absolutePathList.get(i)) + 1);
-                        }
+                    // only one image to add , 0 index image
+                    if (allImagesPath.contains(absolutePathList.get(0))){
+                        Log.v("LOG_TAG", "\nlala" + absolutePathList.get(0));
+                        toggleSelection(allImagesPath.indexOf(absolutePathList.get(0)) + 1);
                     }
                     updateButton();
                     cursor.close();
 
-                } else {
+                } else { // if user selects multiple data
                     if (data.getClipData() != null) {
                         ClipData mClipData = data.getClipData();
 
@@ -506,16 +498,10 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
                             cursor.moveToFirst();
                             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                             Log.i("column", columnIndex+":");////
-                            imageEncoded  = cursor.getString(columnIndex);
                             String absolutePathOfImage = cursor.getString(columnIndex);
                             absolutePathList.add(absolutePathOfImage);
-                            imagesEncodedList.add(imageEncoded);
                             cursor.close();
-
                         }
-
-                        Log.v("LOG_TAG", "Selected Images" + mArrayUri.size());
-                        Log.v("LOG_TAG", "Selected Images" + mArrayUri.get(0) + "\n" + mArrayUri.get(1));
 
                         for (int i = 0; i < absolutePathList.size(); i++)
                         {
@@ -525,11 +511,10 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
                              }
                         }
                         updateButton();
-
                     }
                 }
             } else {
-                Toast.makeText(this, "You haven't picked Image",
+                Toast.makeText(this, "Please pick an image",
                         Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
