@@ -1,14 +1,12 @@
-    package com.example.mergeyourpics;
+package com.example.mergeyourpics;
 
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,18 +55,8 @@ public class MyAdapter extends SelectableAdapter<MyAdapter.ImagesViewHolder> {
         }
         else{
             SelectImageFromMemoryViewHolder imageFromMemoryViewHolder = (SelectImageFromMemoryViewHolder) holder;
-            imageFromMemoryViewHolder.button.setImageResource(R.drawable.ic_launcher_background);
-
-            imageFromMemoryViewHolder.button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.i("click", "clicked button");
-                }
-            });
         }
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -91,7 +79,7 @@ public class MyAdapter extends SelectableAdapter<MyAdapter.ImagesViewHolder> {
     public static class ImagesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener  {
         public ImageView mImage;
         public ImageView mImageSelectedOrNot;
-        private ClickListener listener;
+        protected ClickListener listener;
         private final View selectedOverlay;
 
         public ImagesViewHolder(View itemView, ClickListener listener) {
@@ -100,32 +88,37 @@ public class MyAdapter extends SelectableAdapter<MyAdapter.ImagesViewHolder> {
             mImageSelectedOrNot = itemView.findViewById(R.id.image_not_selected);
             this.listener = listener;
 
-            selectedOverlay = (View) itemView.findViewById(R.id.image_selected);//todo
+            selectedOverlay = (View) itemView.findViewById(R.id.image_selected);
             itemView.setOnClickListener(this);
 
-            itemView.setOnLongClickListener (this);
+            itemView.setOnLongClickListener(this);
         }
+
 
         @Override
         public void onClick(View v) {
             if (listener != null) {
                 Log.i("clicked", "clicked");
-                listener.onItemClicked(getAdapterPosition ());
+                listener.onItemClicked(getAdapterPosition());
             }
         }
 
         @Override
         public boolean onLongClick(View v) {
             if (listener != null) {
-                Log.i("clicked", "Longclicked");
-                return listener.onItemLongClicked(getAdapterPosition ());
+                Log.i("clicked", "Long clicked");
+                return listener.onItemLongClicked(getAdapterPosition());
             }
             return false;
         }
+
         public interface ClickListener {
            void onItemClicked(int position);
 
            boolean onItemLongClicked(int position);
+
+           void onChooseImagesClicked();
+
         }
 
     }
@@ -136,6 +129,13 @@ public class MyAdapter extends SelectableAdapter<MyAdapter.ImagesViewHolder> {
         public SelectImageFromMemoryViewHolder(@NonNull View itemView) {
             super(itemView, clickListener);
             button = itemView.findViewById(R.id.choose_img_form_memory_btn);
+
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onChooseImagesClicked();
+                }
+            });
         }
     }
 

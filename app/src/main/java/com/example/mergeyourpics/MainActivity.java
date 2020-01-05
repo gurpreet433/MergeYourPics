@@ -2,6 +2,7 @@ package com.example.mergeyourpics;
 
 import androidx.annotation.NonNull;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -16,8 +17,10 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -47,6 +50,7 @@ import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 import com.skydoves.colorpickerview.listeners.ColorListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity  implements MyAdapter.ImagesViewHolder.ClickListener   {
 
@@ -432,6 +436,110 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
         updateButton();
         return true;
     }
+
+
+    // Pick images from memory
+    int PICK_IMAGE_MULTIPLE = 1;
+    String imageEncoded;
+    List<String> imagesEncodedList;
+    ArrayList<String> absolutePathList;
+    @Override
+    public void onChooseImagesClicked() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,"Select Picture"), PICK_IMAGE_MULTIPLE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        try {
+            // When an Image is picked
+            if (requestCode == PICK_IMAGE_MULTIPLE && resultCode == RESULT_OK
+                    && null != data) {
+                // Get the Image from data
+
+                String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                imagesEncodedList = new ArrayList<String>();
+                absolutePathList = new ArrayList<String>();
+                if(data.getData()!=null){
+
+                    Uri mImageUri=data.getData();
+
+                    // Get the cursor
+                    Cursor cursor = getContentResolver().query(mImageUri,
+                            filePathColumn, null, null, null);
+                    // Move to first row
+                    cursor.moveToFirst();
+
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String absolutePathOfImage = cursor.getString(columnIndex);
+                    absolutePathList.add(absolutePathOfImage);
+                    Log.i("column", columnIndex+":");////
+                    imageEncoded  = cursor.getString(columnIndex);
+
+                    for (int i = 0; i < absolutePathList.size(); i++)
+                    {
+                        if (allImagesPath.contains(absolutePathList.get(i))){
+                            Log.v("LOG_TAG", "\nlala" + absolutePathList.get(i));
+                            toggleSelection(allImagesPath.indexOf(absolutePathList.get(i)) + 1);
+                        }
+                    }
+                    updateButton();
+                    cursor.close();
+
+                } else {
+                    if (data.getClipData() != null) {
+                        ClipData mClipData = data.getClipData();
+
+                        ArrayList<Uri> mArrayUri = new ArrayList<Uri>();
+                        for (int i = 0; i < mClipData.getItemCount(); i++) {
+
+                            ClipData.Item item = mClipData.getItemAt(i);
+                            Uri uri = item.getUri();
+                            mArrayUri.add(uri);
+                            // Get the cursor
+                            Cursor cursor = getContentResolver().query(uri, filePathColumn,
+                                    null, null, null);
+                            // Move to first row
+                            cursor.moveToFirst();
+                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                            Log.i("column", columnIndex+":");////
+                            imageEncoded  = cursor.getString(columnIndex);
+                            String absolutePathOfImage = cursor.getString(columnIndex);
+                            absolutePathList.add(absolutePathOfImage);
+                            imagesEncodedList.add(imageEncoded);
+                            cursor.close();
+
+                        }
+
+                        Log.v("LOG_TAG", "Selected Images" + mArrayUri.size());
+                        Log.v("LOG_TAG", "Selected Images" + mArrayUri.get(0) + "\n" + mArrayUri.get(1));
+
+                        for (int i = 0; i < absolutePathList.size(); i++)
+                        {
+                            if (allImagesPath.contains(absolutePathList.get(i))){
+                                Log.v("LOG_TAG", "\nlala" + absolutePathList.get(i));
+                                toggleSelection(allImagesPath.indexOf(absolutePathList.get(i)) + 1);
+                             }
+                        }
+                        updateButton();
+
+                    }
+                }
+            } else {
+                Toast.makeText(this, "You haven't picked Image",
+                        Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+                    .show();
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 
     private void toggleSelection(int position) {
         myAdapter.toggleSelection (position);
