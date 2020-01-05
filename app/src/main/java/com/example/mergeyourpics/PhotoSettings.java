@@ -8,7 +8,7 @@ public class PhotoSettings {
     Boolean stackVertically;
     int colorChoice;
     int horizontalSpacing;
-    int verticalSpacking;
+    int verticalSpacing;
     Boolean scaleImageToSmallest;
 
 
@@ -16,8 +16,8 @@ public class PhotoSettings {
     {
         stackVertically = true;
         colorChoice = Color.WHITE;
-        horizontalSpacing = 48;
-        verticalSpacking = 39;
+        horizontalSpacing = 48; //random width
+        verticalSpacing = 39;  // random width
         scaleImageToSmallest = true;
     }
 
@@ -34,7 +34,7 @@ public class PhotoSettings {
     }
 
     public int getVerticalSpacking() {
-        return verticalSpacking;
+        return verticalSpacing;
     }
 
     public Boolean getScaleImageToSmallest() {
@@ -56,8 +56,8 @@ public class PhotoSettings {
         this.horizontalSpacing = horizontalSpacing;
     }
 
-    public void setVerticalSpacking(int verticalSpacking) {
-        this.verticalSpacking = verticalSpacking;
+    public void setVerticalSpacking(int verticalSpacing) {
+        this.verticalSpacing = verticalSpacing;
     }
 
     public void setScaleImageToSmallest(Boolean scaleImageToSmallest) {

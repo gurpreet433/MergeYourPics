@@ -15,6 +15,7 @@ import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -33,9 +34,13 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity  implements MyAdapter.ImagesViewHolder.ClickListener   {
@@ -127,7 +132,7 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
         ImageSpacingLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("click", "clicked");
+                createLongDialog(MainActivity.this);
             }
         });
 
@@ -152,6 +157,66 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
         });
     }
 
+    private void createLongDialog(Context context) {
+        Log.i("here", "hereere");
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.image_spacing_layout);
+
+        final SeekBar horizontalSeekBar = dialog.findViewById(R.id.horizontal_seek_bar);
+        final SeekBar verticalSeekBar = dialog.findViewById(R.id.vertical_seek_bar);
+        final TextView horizontalDistanceText = dialog.findViewById(R.id.horizontal_value);
+        final TextView verticalDistanceText = dialog.findViewById(R.id.vertical_value_text);
+
+        horizontalSeekBar.setProgress(photoSettings.getHorizontalSpacing());
+        horizontalDistanceText.setText(photoSettings.getHorizontalSpacing() + "");
+        verticalSeekBar.setProgress(photoSettings.getVerticalSpacking());
+        verticalDistanceText.setText(photoSettings.getVerticalSpacking()+ "");
+
+        Button cancelButton = dialog.findViewById(R.id.cancle_button_dialog);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        Button okButton = dialog.findViewById(R.id.ok_button_dialog);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                photoSettings.setHorizontalSpacing(horizontalSeekBar.getProgress());
+                photoSettings.setVerticalSpacking(verticalSeekBar.getProgress());
+                dialog.dismiss();
+            }
+        });
+
+        horizontalSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                horizontalDistanceText.setText(progress + "");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        verticalSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+               verticalDistanceText.setText(progress + "");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+
+        dialog.show();
+    }
 
     void setupRecyclerView(){
         recyclerView = findViewById(R.id.recycler_view);
