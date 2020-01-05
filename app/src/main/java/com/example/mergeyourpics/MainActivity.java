@@ -625,6 +625,11 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
         clearSelection();
         updateButton();
         SaveImage(cs);
+
+        // updating recycler view
+        // not the most prettiest way
+        allImagesPath = getAllShownImagesPath(this);
+        setupRecyclerView();
     }
 
     private  void SaveImage(Bitmap finalBitmap) {
