@@ -14,7 +14,7 @@ public class PhotoSettings {
 
     PhotoSettings()
     {
-        stackVertically = true;
+        stackVertically = false;
         colorChoice = Color.WHITE;
         horizontalSpacing = 48; //random width
         verticalSpacing = 39;  // random width

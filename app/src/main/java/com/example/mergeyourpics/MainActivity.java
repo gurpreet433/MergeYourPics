@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,10 +28,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -164,8 +167,8 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
                                 dialogInterface.dismiss();
                             }
                         })
-                        .attachAlphaSlideBar(true)
-                        .attachBrightnessSlideBar(true)
+                       // .attachAlphaSlideBar(true)
+                       // .attachBrightnessSlideBar(true)
                         .show();
 
             }
@@ -597,12 +600,21 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
             File imgFile = new  File(allImagesPath.get(i - 1));
             if(imgFile.exists()){
                  bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                 if(bitmap.getHeight()> height)
-                 {
-                     height = bitmap.getHeight();
+
+                 if(photoSettings.getStackVertically() != true) {
+                     if (bitmap.getHeight() > height) {
+                         height = bitmap.getHeight();
+                     }
+                     width += bitmap.getWidth();
                  }
-                 width += bitmap.getWidth();
-                 bitmapList.add(bitmap);
+                 else{
+                     if (bitmap.getWidth() > width) {
+                         width = bitmap.getWidth();
+                     }
+                     height += bitmap.getHeight();
+                 }
+
+                bitmapList.add(bitmap);
             }
             else {
                 Log.e("error", "image does not exits");
@@ -613,26 +625,45 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
 
         Bitmap cs = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas comboImage = new Canvas(cs);
-        comboImage.drawColor(photoSettings.getColorChoice());
 
-        int offsetWidth = 0;
+        // paint the canvas in desired color
+        Paint rect_paint = new Paint();
+        rect_paint.setStyle(Paint.Style.FILL);
+        rect_paint.setColor(photoSettings.getColorChoice());
+        comboImage.drawRect(0, 0, width, height, rect_paint);
+
+        int offset = 0;
         for (Bitmap image: bitmapList) {
-            comboImage.drawBitmap(image, offsetWidth, 0f, null);
-            offsetWidth += image.getWidth();
-            offsetWidth += photoSettings.getHorizontalSpacing();
+
+            if(photoSettings.getStackVertically() != true) {
+                comboImage.drawBitmap(image, offset, 0f, null);
+                offset += image.getWidth();
+                offset += photoSettings.getHorizontalSpacing();
+            }
+            else
+            {
+                comboImage.drawBitmap(image, 0f,offset, null);
+                offset += image.getHeight();
+                offset += photoSettings.getVerticalSpacking();
+            }
         }
 
         clearSelection();
         updateButton();
-        SaveImage(cs);
+        File file = SaveImage(cs);
 
-        // updating recycler view
-        // not the most prettiest way
         allImagesPath = getAllShownImagesPath(this);
         setupRecyclerView();
+
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        Uri data = Uri.parse("file://" + file.getAbsolutePath());
+        intent.setDataAndType(data, "image/*");
+        startActivity(intent);
+
     }
 
-    private  void SaveImage(Bitmap finalBitmap) {
+    private  File SaveImage(Bitmap finalBitmap) {
         String fname = "Image-"+ Calendar.getInstance().getTimeInMillis()+".jpg";
 
         String path = Environment.getExternalStorageDirectory().toString();
@@ -646,10 +677,14 @@ public class MainActivity extends AppCompatActivity  implements MyAdapter.Images
             fOut.flush(); // Not really required
             fOut.close(); // do not forget to close the stream
 
-            MediaStore.Images.Media.insertImage(getContentResolver(),file.getAbsolutePath(),file.getName(),file.getName());
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
+        return file;
 
     }
 }
